@@ -1,11 +1,18 @@
+const session = require('express-sessions');
 const express = require('express');
 const app = express();
 const port = 3000;
-const { getQuestion } = require('./utils/mathUtilities');
+const { getQuestion, isCorrectAnswer, getMathStreak } = require('./utils/mathUtilities');
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true })); // For parsing form data
 app.use(express.static('public')); // To serve static files (e.g., CSS)
+
+app.use(session({
+    secret: 'quizsecret',
+    resave: false,
+    saveUninitialized: true
+}));
 
 
 //Some routes required for full functionality are missing here. Only get routes should be required
@@ -19,13 +26,23 @@ app.get('/leaderboards', (req, res) => {
 
 app.get('/quiz', (req, res) => {
     const mathQuiz = getQuestion();
+    req.session.mathQuiz = mathQuiz;
     res.render('quiz',{mathQuiz:mathQuiz});
+});
+
+app.get('/incorrect', (req, res) =>{
+    res.render('incorrect');
+});
+
+app.get('/correct', (req, res) =>{
+    const currentStreak = getMathStreak();
+    res.render('correct', {currentStreak});
 });
 
 //Handles quiz submissions.
 app.post('/quiz', (req, res) => {
     const { answer } = req.body;
-    console.log(`Answer: ${answer}`);
+    const mathQuiz = req.session.mathQuiz;
 
     //answer will contain the value the user entered on the quiz page
     //Logic must be added here to check if the answer is correct, then track the streak and redirect properly

@@ -3,9 +3,15 @@
  * 
  * @returns {} The randomly generated math question
  */
+
+let mathStreak = 0;
+function getMathStreak() {
+    return mathStreak;
+  }
+
 function getQuestion() {
-    const firstNumber = Math.floor(Math.random() * 10);
-    const secondNumber = Math.floor(Math.random() * 10);
+    const firstNumber = Math.floor(Math.random() * 50);
+    const secondNumber = Math.floor(Math.random() * 50);
     let operator = ["+","-","*","/"]
     let pickedOperator = operator[Math.floor(Math.random() *operator.length)];
     let question = `${firstNumber} ${pickedOperator} ${secondNumber}`
@@ -37,10 +43,20 @@ function getQuestion() {
  * @returns {boolean} True if the answer was correct, false otherwise.
  */
 function isCorrectAnswer(question, answer) {
-    return false;
+    if (answer != mathQuiz.quizAnswer){
+        console.log(`Incorrect Answer! Correct Answer Was: ${theQuiz.quizAnswer}!`);
+        currentStreak = 0;
+        console.log(currentStreak)
+        return { currentStreak: currentStreak }
+    }   else {
+            console.log(`Correct Answer!`);
+            currentStreak += 1;
+            console.log(currentStreak)
+    }
 }
 
 module.exports = {
     getQuestion,
-    isCorrectAnswer
+    isCorrectAnswer,
+    getMathStreak
 }
