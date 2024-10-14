@@ -4,7 +4,29 @@
  * @returns {} The randomly generated math question
  */
 function getQuestion() {
-
+    const firstNumber = Math.floor(Math.random() * 10);
+    const secondNumber = Math.floor(Math.random() * 10);
+    let operator = ["+","-","*","/"]
+    let pickedOperator = operator[Math.floor(Math.random() *operator.length)];
+    let question = `${firstNumber} ${pickedOperator} ${secondNumber}`
+    let questionAnswer
+    switch(pickedOperator) {
+        case'+':
+            questionAnswer = firstNumber + secondNumber;
+            break
+        case'-':
+            questionAnswer = firstNumber - secondNumber;
+            break
+        case'/':
+            questionAnswer = firstNumber / secondNumber;
+            break
+        case'*':
+            questionAnswer = firstNumber * secondNumber;
+            break
+        }
+        return {
+           quizQuestion: question, quizAnswer: questionAnswer
+        }
 }
 
 /**
