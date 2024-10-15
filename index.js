@@ -56,10 +56,6 @@ app.post('/quiz', (req, res) => {
     //By default we'll just redirect to the homepage again.
 });
 
-module.exports = {
-    mathQuiz
-}
-
 // Start the server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
