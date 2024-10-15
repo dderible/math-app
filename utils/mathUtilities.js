@@ -44,16 +44,17 @@ function getQuestion() {
  * @param {*} answer The potential answer
  * @returns {boolean} True if the answer was correct, false otherwise.
  */
-function isCorrectAnswer(question, answer) {
+function isCorrectAnswer(mathQuiz, answer) {
     if (answer != mathQuiz.quizAnswer){
         console.log(`Incorrect Answer! Correct Answer Was: ${mathQuiz.quizAnswer}!`);
         currentStreak = 0;
-        console.log(currentStreak)
-        return { currentStreak: currentStreak }
+        console.log(mathStreak)
+        return { theTruth: false, mathStreak: mathStreak }
     }   else {
             console.log(`Correct Answer!`);
-            currentStreak += 1;
-            console.log(currentStreak)
+            mathStreak += 1;
+            console.log(mathStreak)
+            return { theTruth: true, currentStreak: currentStreak };
     }
 }
 

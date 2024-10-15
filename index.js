@@ -16,8 +16,17 @@ app.use(session({
 
 
 //Some routes required for full functionality are missing here. Only get routes should be required
+function quizBreak(req, res, next) {
+    if (!req.session.theQuiz) {
+    
+        return res.redirect('/quiz'); 
+    }
+    next();
+}
+
 app.get('/', (req, res) => {
-    res.render('index');
+    const mathStreak = getMathStreak();
+    res.render('index', { mathStreak });
 });
 
 app.get('/leaderboards', (req, res) => {
@@ -27,7 +36,7 @@ app.get('/leaderboards', (req, res) => {
 app.get('/quiz', (req, res) => {
     const mathQuiz = getQuestion();
     req.session.mathQuiz = mathQuiz;
-    res.render('quiz',{mathQuiz:mathQuiz});
+    res.render('quiz',{mathQuiz});
 });
 
 app.get('/incorrect', (req, res) =>{
@@ -35,20 +44,19 @@ app.get('/incorrect', (req, res) =>{
 });
 
 app.get('/correct', (req, res) =>{
-    const currentStreak = getMathStreak();
-    res.render('correct', {currentStreak});
+    const mathStreak = getMathStreak();
+    res.render('correct', {mathStreak});
 });
 
 //Handles quiz submissions.
-app.post('/quiz', (req, res) => {
+app.post('/quiz', quizBreak, (req, res) => {
     const { answer } = req.body;
     const mathQuiz = req.session.mathQuiz;
-
-    let correctAnswer = isCorrectAnswer(answer, mathQuiz)
-    if (correctAnswer.correctAnswer ===false){
-        res.redirect('/incorrect');
-    }else{
-        res.redirect('/correct');
+    let correctAnswer = isCorrectAnswer(answer, mathQuiz);
+    if (!correctAnswer.theTruth) {
+        res.redirect('/incorrect'); 
+    } else {
+        res.redirect('/correct'); 
     }
 
     //answer will contain the value the user entered on the quiz page
