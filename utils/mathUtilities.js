@@ -1,3 +1,5 @@
+const { mathQuiz } = require('.//index.js');
+
 /**
  * Gets a random multiplication, division, subtraction or addition question
  * 
@@ -44,7 +46,7 @@ function getQuestion() {
  */
 function isCorrectAnswer(question, answer) {
     if (answer != mathQuiz.quizAnswer){
-        console.log(`Incorrect Answer! Correct Answer Was: ${theQuiz.quizAnswer}!`);
+        console.log(`Incorrect Answer! Correct Answer Was: ${mathQuiz.quizAnswer}!`);
         currentStreak = 0;
         console.log(currentStreak)
         return { currentStreak: currentStreak }

@@ -1,4 +1,4 @@
-const session = require('express-sessions');
+const session = require('express-session');
 const express = require('express');
 const app = express();
 const port = 3000;
@@ -44,11 +44,21 @@ app.post('/quiz', (req, res) => {
     const { answer } = req.body;
     const mathQuiz = req.session.mathQuiz;
 
+    let correctAnswer = isCorrectAnswer(answer, mathQuiz)
+    if (correctAnswer.correctAnswer ===false){
+        res.redirect('/incorrect');
+    }else{
+        res.redirect('/correct');
+    }
+
     //answer will contain the value the user entered on the quiz page
     //Logic must be added here to check if the answer is correct, then track the streak and redirect properly
     //By default we'll just redirect to the homepage again.
-    res.redirect('/');
 });
+
+module.exports = {
+    mathQuiz
+}
 
 // Start the server
 app.listen(port, () => {
