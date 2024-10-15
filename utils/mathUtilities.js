@@ -8,8 +8,34 @@ const { mathQuiz } = require('./../index.js');
 
 let mathStreak = 0;
 function getMathStreak() {
-    return mathStreak;
-  }
+    return mathStreak
+  };
+
+function addToBoard(mathStreak){
+    let leaderboard = [];
+    let leaderBoardAdd = {
+        mathStreak: mathStreak,
+    };
+
+    if (leaderboard.length < 10) {
+        // leaderboard has less than 10 items just add the new score directly
+        leaderboard.push(scoreToAdd);
+    } else {
+        let lowestStreak = Math.min(...leaderboard.map(entry => entry.mathStreak));
+        if (mathStreak > lowestStreak) {
+            let lowestIndex = leaderboard.findIndex(entry => entry.mathStreak === lowestStreak);
+            leaderboard[lowestIndex] = scoreToAdd;
+        } else {
+            console.log("You can do better than that! Try Again?");
+        }
+    }
+
+    leaderboard.sort((a, b) => b.currentStreak - a.currentStreak);
+    
+    leaderboard.splice(10); 
+
+    console.log(leaderboard);
+};
 
 function getQuestion() {
     const firstNumber = Math.floor(Math.random() * 50);
@@ -47,12 +73,14 @@ function getQuestion() {
 function isCorrectAnswer(mathQuiz, answer) {
     if (answer != mathQuiz.quizAnswer){
         console.log(`Incorrect Answer! Correct Answer Was: ${mathQuiz.quizAnswer}!`);
+        addToBoard(mathStreak)
         currentStreak = 0;
         console.log(mathStreak)
         return { theTruth: false, mathStreak: mathStreak }
     }   else {
             console.log(`Correct Answer!`);
             mathStreak += 1;
+            addToBoard(mathStreak)
             console.log(mathStreak)
             return { theTruth: true, currentStreak: currentStreak };
     }
@@ -61,5 +89,6 @@ function isCorrectAnswer(mathQuiz, answer) {
 module.exports = {
     getQuestion,
     isCorrectAnswer,
-    getMathStreak
+    getMathStreak,
+    addToBoard
 }

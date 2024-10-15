@@ -2,7 +2,8 @@ const session = require('express-session');
 const express = require('express');
 const app = express();
 const port = 3000;
-const { getQuestion, isCorrectAnswer, getMathStreak } = require('./utils/mathUtilities');
+const { getQuestion, isCorrectAnswer, getMathStreak, addToBoard } = require('./utils/mathUtilities');
+const { leaderboard } = require('./utils/mathUtilities');
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true })); // For parsing form data
@@ -30,13 +31,13 @@ app.get('/', (req, res) => {
 });
 
 app.get('/leaderboards', (req, res) => {
-    res.render('leaderboards');
+    res.render('leaderboards', { leaderboard });
 });
 
 app.get('/quiz', (req, res) => {
     const mathQuiz = getQuestion();
     req.session.mathQuiz = mathQuiz;
-    res.render('quiz',{mathQuiz});
+    res.render('quiz',{ mathQuiz });
 });
 
 app.get('/incorrect', (req, res) =>{
@@ -45,7 +46,7 @@ app.get('/incorrect', (req, res) =>{
 
 app.get('/correct', (req, res) =>{
     const mathStreak = getMathStreak();
-    res.render('correct', {mathStreak});
+    res.render('correct', { mathStreak });
 });
 
 //Handles quiz submissions.
