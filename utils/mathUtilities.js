@@ -1,4 +1,4 @@
-const { mathQuiz } = require('./../index.js');
+
 
 /**
  * Gets a random multiplication, division, subtraction or addition question
